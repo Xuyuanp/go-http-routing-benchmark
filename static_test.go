@@ -198,6 +198,7 @@ var (
 	staticTigerTonic  http.Handler
 	staticTraffic     http.Handler
 	staticVulcan      http.Handler
+	staticHador       http.Handler
 	// staticZeus        http.Handler
 )
 
@@ -220,6 +221,9 @@ func init() {
 	})
 	calcMem("Beego", func() {
 		staticBeego = loadBeego(staticRoutes)
+	})
+	calcMem("Hador", func() {
+		staticHador = loadHador(staticRoutes)
 	})
 	calcMem("Bone", func() {
 		staticBone = loadBone(staticRoutes)
@@ -307,6 +311,9 @@ func BenchmarkHttpServeMux_StaticAll(b *testing.B) {
 }
 func BenchmarkBeego_StaticAll(b *testing.B) {
 	benchRoutes(b, staticBeego, staticRoutes)
+}
+func BenchmarkHador_StaticAll(b *testing.B) {
+	benchRoutes(b, staticHador, staticRoutes)
 }
 func BenchmarkBear_StaticAll(b *testing.B) {
 	benchRoutes(b, staticBear, staticRoutes)

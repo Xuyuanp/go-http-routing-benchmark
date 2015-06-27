@@ -15,6 +15,7 @@ var (
 		{"Ace", loadAce},
 		{"Bear", loadBear},
 		{"Beego", loadBeego},
+		{"Hador", loadHador},
 		{"Bone", loadBone},
 		{"Denco", loadDenco},
 		{"Echo", loadEcho},

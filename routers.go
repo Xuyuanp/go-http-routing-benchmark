@@ -18,6 +18,7 @@ import (
 	// - Make a pull request (without benchmark results) at
 	//   https://github.com/julienschmidt/go-http-routing-benchmark
 	"github.com/Unknwon/macaron"
+	"github.com/Xuyuanp/hador"
 	"github.com/ant0ine/go-json-rest/rest"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
@@ -1304,6 +1305,51 @@ func loadVulcan(routes []route) http.Handler {
 		}
 	}
 	return mux
+}
+
+func hadorHandler(_ *hador.Context) {}
+
+func hadorHandlerWrite(ctx *hador.Context) {
+	ctx.WriteString(ctx.Params().GetStringMust("name", ""))
+}
+
+func hadorHandlerTest(ctx *hador.Context) {
+	ctx.WriteString(ctx.Request.RequestURI)
+}
+
+func loadHador(routes []route) http.Handler {
+	handler := hador.HandlerFunc(hadorHandler)
+	if loadTestHandler {
+		handler = hador.HandlerFunc(hadorHandlerTest)
+	}
+
+	re := regexp.MustCompile(":([^/]*)")
+	h := hador.New()
+	for _, route := range routes {
+		route.path = re.ReplaceAllString(route.path, "{$1}")
+		switch route.method {
+		case "GET":
+			h.Get(route.path, handler)
+		case "POST":
+			h.Post(route.path, handler)
+		case "PUT":
+			h.Put(route.path, handler)
+		case "PATCH":
+			h.Patch(route.path, handler)
+		case "DELETE":
+			h.Delete(route.path, handler)
+		default:
+			panic("Unknow HTTP method: " + route.method)
+		}
+	}
+
+	return h
+}
+
+func loadHadorSingle(method, path string, handler hador.HandlerFunc) http.Handler {
+	h := hador.New()
+	h.AddRoute(method, path, handler)
+	return h
 }
 
 func loadVulcanSingle(method, path string, handler http.HandlerFunc) http.Handler {

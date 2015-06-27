@@ -59,6 +59,7 @@ var (
 	parseAce         http.Handler
 	parseBear        http.Handler
 	parseBeego       http.Handler
+	parseHador       http.Handler
 	parseBone        http.Handler
 	parseDenco       http.Handler
 	parseEcho        http.Handler
@@ -96,6 +97,9 @@ func init() {
 	})
 	calcMem("Beego", func() {
 		parseBeego = loadBeego(parseAPI)
+	})
+	calcMem("Hador", func() {
+		parseHador = loadHador(parseAPI)
 	})
 	calcMem("Bone", func() {
 		parseBone = loadBone(parseAPI)
@@ -185,6 +189,10 @@ func BenchmarkBear_ParseStatic(b *testing.B) {
 func BenchmarkBeego_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseBeego, req)
+}
+func BenchmarkHador_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseHador, req)
 }
 func BenchmarkBone_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -297,6 +305,10 @@ func BenchmarkBeego_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseBeego, req)
 }
+func BenchmarkHador_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseHador, req)
+}
 func BenchmarkBone_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseBone, req)
@@ -408,6 +420,10 @@ func BenchmarkBeego_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseBeego, req)
 }
+func BenchmarkHador_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseHador, req)
+}
 func BenchmarkBone_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseBone, req)
@@ -515,6 +531,9 @@ func BenchmarkBear_ParseAll(b *testing.B) {
 }
 func BenchmarkBeego_ParseAll(b *testing.B) {
 	benchRoutes(b, parseBeego, parseAPI)
+}
+func BenchmarkHador_ParseAll(b *testing.B) {
+	benchRoutes(b, parseHador, parseAPI)
 }
 func BenchmarkBone_ParseAll(b *testing.B) {
 	benchRoutes(b, parseBone, parseAPI)

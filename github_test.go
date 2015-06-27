@@ -277,6 +277,7 @@ var (
 	githubAce         http.Handler
 	githubBear        http.Handler
 	githubBeego       http.Handler
+	githubHador       http.Handler
 	githubBone        http.Handler
 	githubDenco       http.Handler
 	githubEcho        http.Handler
@@ -314,6 +315,9 @@ func init() {
 	})
 	calcMem("Beego", func() {
 		githubBeego = loadBeego(githubAPI)
+	})
+	calcMem("Hador", func() {
+		githubHador = loadHador(githubAPI)
 	})
 	calcMem("Bone", func() {
 		githubBone = loadBone(githubAPI)
@@ -403,6 +407,10 @@ func BenchmarkBear_GithubStatic(b *testing.B) {
 func BenchmarkBeego_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubBeego, req)
+}
+func BenchmarkHador_GithubStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/user/repos", nil)
+	benchRequest(b, githubHador, req)
 }
 func BenchmarkBone_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
@@ -515,6 +523,10 @@ func BenchmarkBeego_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubBeego, req)
 }
+func BenchmarkHador_GithubParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
+	benchRequest(b, githubHador, req)
+}
 func BenchmarkBone_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubBone, req)
@@ -622,6 +634,9 @@ func BenchmarkBear_GithubAll(b *testing.B) {
 }
 func BenchmarkBeego_GithubAll(b *testing.B) {
 	benchRoutes(b, githubBeego, githubAPI)
+}
+func BenchmarkHador_GithubAll(b *testing.B) {
+	benchRoutes(b, githubHador, githubAPI)
 }
 func BenchmarkBone_GithubAll(b *testing.B) {
 	benchRoutes(b, githubBone, githubAPI)

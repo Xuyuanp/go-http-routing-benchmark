@@ -39,6 +39,7 @@ var (
 	gplusAce         http.Handler
 	gplusBear        http.Handler
 	gplusBeego       http.Handler
+	gplusHador       http.Handler
 	gplusBone        http.Handler
 	gplusDenco       http.Handler
 	gplusEcho        http.Handler
@@ -76,6 +77,9 @@ func init() {
 	})
 	calcMem("Beego", func() {
 		gplusBeego = loadBeego(gplusAPI)
+	})
+	calcMem("Hador", func() {
+		gplusHador = loadHador(gplusAPI)
 	})
 	calcMem("Bone", func() {
 		gplusBone = loadBone(gplusAPI)
@@ -165,6 +169,10 @@ func BenchmarkBear_GPlusStatic(b *testing.B) {
 func BenchmarkBeego_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusBeego, req)
+}
+func BenchmarkHador_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusHador, req)
 }
 func BenchmarkBone_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -277,6 +285,10 @@ func BenchmarkBeego_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusBeego, req)
 }
+func BenchmarkHador_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusHador, req)
+}
 func BenchmarkBone_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusBone, req)
@@ -388,6 +400,10 @@ func BenchmarkBeego_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusBeego, req)
 }
+func BenchmarkHador_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusHador, req)
+}
 func BenchmarkBone_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusBone, req)
@@ -495,6 +511,9 @@ func BenchmarkBear_GPlusAll(b *testing.B) {
 }
 func BenchmarkBeego_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusBeego, gplusAPI)
+}
+func BenchmarkHador_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusHador, gplusAPI)
 }
 func BenchmarkBone_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusBone, gplusAPI)
